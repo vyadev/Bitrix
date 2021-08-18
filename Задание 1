@@ -1,0 +1,46 @@
+Необходимо: 
+1. Создать свой модуль со следующей структурой: 
+module.name/ 
+ admin/ 
+ classes/ 
+  general/ 
+ install/ 
+  db/ 
+   mysql/ 
+    install.sql 
+    uninstall.sql 
+  Index.php 
+step.php 
+unstep.php 
+unstep1.php 
+version.php 
+ /lang/ 
+ include.php 
+prolog.php
+
+Где module.name  - имя вашего модуля. Указать версию и дату изменения модуля. Модуль должен быть 
+корректно описан. 
+В файле module.name/install/index.php должен быть класс совпадающий с именем модуля, а так же методы 
+DoInstall(), DoUninstall() 
+Модуль должен корректно устанавливаться и удаляться. Устанавливать и удалять модуль может только 
+пользователь с правами полного доступа к главному модулю. 
+
+2. Создание и удаление своей таблицы в БД 
+ 
+В файле module.name/install/db/mysql/install.sql написать запрос, создающий таблицу 
+modulename_testtable  со следующей структурой: 
+ID – int, автоинкремент 
+NAME – varchar 
+TIMESTAMP_X – timestamp 
+ 
+В файле module.name/install/db/mysql/uninstall.sql написать запрос, удаляющий таблицу 
+modulename_testtable 
+ 
+Расширить функционал файла  module.name/install/index.php, добавив методы InstallDB() и UnInstallDB(). 
+Реализовать создание таблицы при установке модуля и удаление таблицы при удалении модуля.  
+ 
+!Важно
+
+При удалении модуля, пользователю должен выводится запрос на удаление таблиц модуля. 
+Форма с запросом в файле  module.name/install/unstep.php, проверка в методе DoUninstall() используя глобальную переменную $step 
+При ошибках установки, удаления, ошибках БД должны выводится ошибки методом $APPLICATION->ThrowException
